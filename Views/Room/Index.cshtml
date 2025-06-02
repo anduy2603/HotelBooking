@@ -1,3 +1,4 @@
+@model IEnumerable<HotelBooking.Models.Room>
 @{
     ViewData["Title"] = "Our Rooms";
 }
@@ -15,7 +16,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <select class="form-select">
+            <select class="form-select" id="roomTypeFilter">
                 <option value="">All Room Types</option>
                 <option value="single">Single Room</option>
                 <option value="double">Double Room</option>
@@ -25,109 +26,40 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Filters</h5>
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Price Range</label>
-                            <div class="d-flex gap-2">
-                                <input type="number" class="form-control" placeholder="Min">
-                                <input type="number" class="form-control" placeholder="Max">
+        @foreach (var room in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card room-card h-100">
+                    <img src="@room.MainImage" class="card-img-top" alt="@room.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@room.Name</h5>
+                        <p class="card-text">@room.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="mb-0"><i class="fas fa-user"></i> Max @room.MaxGuests guests</p>
+                                <p class="mb-0"><i class="fas fa-bed"></i> @room.BedType</p>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Room Type</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="single">
-                                <label class="form-check-label" for="single">Single Room</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="double">
-                                <label class="form-check-label" for="double">Double Room</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="suite">
-                                <label class="form-check-label" for="suite">Suite</label>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Amenities</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="wifi">
-                                <label class="form-check-label" for="wifi">Free Wi-Fi</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="breakfast">
-                                <label class="form-check-label" for="breakfast">Breakfast Included</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="pool">
-                                <label class="form-check-label" for="pool">Pool Access</label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card room-card">
-                        <img src="/images/room-single.jpg" class="card-img-top" alt="Single Room">
-                        <div class="card-body">
-                            <h5 class="card-title">Single Room</h5>
-                            <p class="card-text">Perfect for solo travelers, featuring a comfortable single bed and modern amenities.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="room-price mb-0">$99/night</p>
-                                <a href="/Room/Details/1" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card room-card">
-                        <img src="/images/room-double.jpg" class="card-img-top" alt="Double Room">
-                        <div class="card-body">
-                            <h5 class="card-title">Double Room</h5>
-                            <p class="card-text">Spacious room with two comfortable beds, ideal for couples or friends.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="room-price mb-0">$149/night</p>
-                                <a href="/Room/Details/2" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card room-card">
-                        <img src="/images/room-suite.jpg" class="card-img-top" alt="Suite">
-                        <div class="card-body">
-                            <h5 class="card-title">Luxury Suite</h5>
-                            <p class="card-text">Our premium suite with separate living area and premium amenities.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="room-price mb-0">$299/night</p>
-                                <a href="/Room/Details/3" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card room-card">
-                        <img src="/images/room-deluxe.jpg" class="card-img-top" alt="Deluxe Room">
-                        <div class="card-body">
-                            <h5 class="card-title">Deluxe Room</h5>
-                            <p class="card-text">Elegant room with city view and premium amenities.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="room-price mb-0">$199/night</p>
-                                <a href="/Room/Details/4" class="btn btn-primary">View Details</a>
+                            <div class="text-end">
+                                <p class="room-price mb-0">$@room.Price/night</p>
+                                <a href="@Url.Action("Details", "Room", new { id = room.Id })" class="btn btn-primary">View Details</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
-</div> 
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('roomTypeFilter').addEventListener('change', function() {
+            const roomType = this.value;
+            if (roomType) {
+                window.location.href = '@Url.Action("Search", "Room")?roomType=' + roomType;
+            } else {
+                window.location.href = '@Url.Action("Index", "Room")';
+            }
+        });
+    </script>
+} 

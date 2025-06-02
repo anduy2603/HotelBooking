@@ -1,0 +1,97 @@
+@model IEnumerable<HotelBooking.Models.Room>
+@{
+    ViewData["Title"] = "Search Rooms";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Search Rooms</h1>
+
+    <!-- Search Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Check-in Date</label>
+                    <input type="date" class="form-control" name="checkInDate" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Check-out Date</label>
+                    <input type="date" class="form-control" name="checkOutDate" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Guests</label>
+                    <select class="form-select" name="guests">
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Room Type</label>
+                    <select class="form-select" name="roomType">
+                        <option value="">All Types</option>
+                        <option value="single">Single</option>
+                        <option value="double">Double</option>
+                        <option value="suite">Suite</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div class="row">
+        @if (Model.Any())
+        {
+            foreach (var room in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card room-card h-100">
+                        <img src="@room.MainImage" class="card-img-top" alt="@room.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@room.Name</h5>
+                            <p class="card-text">@room.Description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="mb-0"><i class="fas fa-user"></i> Max @room.MaxGuests guests</p>
+                                    <p class="mb-0"><i class="fas fa-bed"></i> @room.BedType</p>
+                                </div>
+                                <div class="text-end">
+                                    <p class="room-price mb-0">$@room.Price/night</p>
+                                    <a href="@Url.Action("Details", "Room", new { id = room.Id })" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No rooms found matching your criteria. Please try different search parameters.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize date inputs with min date as today
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="checkInDate"]').min = today;
+        document.querySelector('input[name="checkOutDate"]').min = today;
+        
+        // Update checkout min date when checkin changes
+        document.querySelector('input[name="checkInDate"]').addEventListener('change', function() {
+            document.querySelector('input[name="checkOutDate"]').min = this.value;
+        });
+    </script>
+} 

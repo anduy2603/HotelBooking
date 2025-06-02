@@ -105,13 +105,33 @@ namespace HotelBooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BedType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Images")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("PricePerNight")
+                    b.Property<string>("MainImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaxGuests")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RoomNumber")
@@ -119,12 +139,92 @@ namespace HotelBooking.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BedType = "Single Bed",
+                            Description = "Perfect for solo travelers, featuring a comfortable single bed and modern amenities.",
+                            Images = "[]",
+                            IsAvailable = true,
+                            MainImage = "/images/room-single.jpg",
+                            MaxGuests = 1,
+                            Name = "Single Room",
+                            Price = 99m,
+                            RoomNumber = "101",
+                            Size = 25,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BedType = "Double Bed",
+                            Description = "Spacious room with two comfortable beds, ideal for couples or friends.",
+                            Images = "[]",
+                            IsAvailable = true,
+                            MainImage = "/images/room-double.jpg",
+                            MaxGuests = 2,
+                            Name = "Double Room",
+                            Price = 149m,
+                            RoomNumber = "201",
+                            Size = 35,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BedType = "King Bed",
+                            Description = "Luxurious suite with separate living area, king-size bed, and premium amenities.",
+                            Images = "[]",
+                            IsAvailable = true,
+                            MainImage = "/images/room-suite.jpg",
+                            MaxGuests = 2,
+                            Name = "Deluxe Suite",
+                            Price = 299m,
+                            RoomNumber = "301",
+                            Size = 50,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BedType = "2 Queen Beds",
+                            Description = "Perfect for families, featuring two queen beds, a spacious living area, and family-friendly amenities.",
+                            Images = "[]",
+                            IsAvailable = true,
+                            MainImage = "/images/room-family.jpg",
+                            MaxGuests = 4,
+                            Name = "Family Suite",
+                            Price = 399m,
+                            RoomNumber = "401",
+                            Size = 65,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BedType = "King Bed",
+                            Description = "Our most luxurious suite with panoramic views, private balcony, and exclusive access to executive lounge.",
+                            Images = "[]",
+                            IsAvailable = true,
+                            MainImage = "/images/room-executive.jpg",
+                            MaxGuests = 2,
+                            Name = "Executive Suite",
+                            Price = 499m,
+                            RoomNumber = "501",
+                            Size = 75,
+                            Type = 3
+                        });
                 });
 
             modelBuilder.Entity("HotelBooking.Models.User", b =>

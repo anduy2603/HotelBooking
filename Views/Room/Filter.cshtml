@@ -1,0 +1,160 @@
+@model IEnumerable<HotelBooking.Models.Room>
+@{
+    ViewData["Title"] = "Filter Rooms";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Filter Rooms</h1>
+
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filters</h5>
+                    <form method="get" id="filterForm">
+                        <!-- Price Range -->
+                        <div class="mb-3">
+                            <label class="form-label">Price Range</label>
+                            <div class="d-flex gap-2">
+                                <input type="number" class="form-control" name="minPrice" placeholder="Min">
+                                <input type="number" class="form-control" name="maxPrice" placeholder="Max">
+                            </div>
+                        </div>
+
+                        <!-- Room Type -->
+                        <div class="mb-3">
+                            <label class="form-label">Room Type</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="roomTypes" value="single" id="single">
+                                <label class="form-check-label" for="single">Single Room</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="roomTypes" value="double" id="double">
+                                <label class="form-check-label" for="double">Double Room</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="roomTypes" value="suite" id="suite">
+                                <label class="form-check-label" for="suite">Suite</label>
+                            </div>
+                        </div>
+
+                        <!-- Bed Type -->
+                        <div class="mb-3">
+                            <label class="form-label">Bed Type</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="bedTypes" value="single" id="bedSingle">
+                                <label class="form-check-label" for="bedSingle">Single Bed</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="bedTypes" value="double" id="bedDouble">
+                                <label class="form-check-label" for="bedDouble">Double Bed</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="bedTypes" value="king" id="bedKing">
+                                <label class="form-check-label" for="bedKing">King Bed</label>
+                            </div>
+                        </div>
+
+                        <!-- Amenities -->
+                        <div class="mb-3">
+                            <label class="form-label">Amenities</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="wifi" id="wifi">
+                                <label class="form-check-label" for="wifi">Free Wi-Fi</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="breakfast" id="breakfast">
+                                <label class="form-check-label" for="breakfast">Breakfast Included</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="pool" id="pool">
+                                <label class="form-check-label" for="pool">Pool Access</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="gym" id="gym">
+                                <label class="form-check-label" for="gym">Gym Access</label>
+                            </div>
+                        </div>
+
+                        <!-- Capacity -->
+                        <div class="mb-3">
+                            <label class="form-label">Capacity</label>
+                            <select class="form-select" name="capacity">
+                                <option value="">Any</option>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room List -->
+        <div class="col-md-9">
+            <div class="row">
+                @if (Model.Any())
+                {
+                    foreach (var room in Model)
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card room-card h-100">
+                                <img src="@room.MainImage" class="card-img-top" alt="@room.Name">
+                                <div class="card-body">
+                                    <h5 class="card-title">@room.Name</h5>
+                                    <p class="card-text">@room.Description</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="mb-0"><i class="fas fa-user"></i> Max @room.MaxGuests guests</p>
+                                            <p class="mb-0"><i class="fas fa-bed"></i> @room.BedType</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <p class="room-price mb-0">$@room.Price/night</p>
+                                            <a href="@Url.Action("Details", "Room", new { id = room.Id })" class="btn btn-primary">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            No rooms found matching your criteria. Please try different filters.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Handle form submission
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get all selected values
+            const formData = new FormData(this);
+            const params = new URLSearchParams();
+            
+            // Add all form data to params
+            for (let [key, value] of formData.entries()) {
+                if (value) {
+                    params.append(key, value);
+                }
+            }
+            
+            // Redirect to filtered results
+            window.location.href = '@Url.Action("Index", "Room")?' + params.toString();
+        });
+    </script>
+} 

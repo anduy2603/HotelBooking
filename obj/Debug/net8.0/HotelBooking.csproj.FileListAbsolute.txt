@@ -2,6 +2,10 @@ C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\appsett
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\appsettings.json
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.staticwebassets.runtime.json
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.exe
+C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.deps.json
+C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.runtimeconfig.json
+C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.dll
+C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.pdb
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\Humanizer.dll
@@ -114,6 +118,7 @@ C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBo
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.RazorAssemblyInfo.cache
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.RazorAssemblyInfo.cs
+C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.sourcelink.json
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\staticwebassets\msbuild.HotelBooking.Microsoft.AspNetCore.StaticWebAssets.props
@@ -128,9 +133,5 @@ C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBo
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.dll
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\refint\HotelBooking.dll
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.pdb
-C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.deps.json
-C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.runtimeconfig.json
-C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.dll
-C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\bin\Debug\net8.0\HotelBooking.pdb
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\HotelBooking.genruntimeconfig.cache
 C:\Users\OS\OneDrive\Desktop\KTLT\HotelBooking\Frontend\obj\Debug\net8.0\ref\HotelBooking.dll

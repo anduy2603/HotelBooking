@@ -1,0 +1,138 @@
+@model HotelBooking.Models.Room
+@{
+    ViewData["Title"] = Model?.Name ?? "Room Details";
+}
+
+<div class="container my-5">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Room Image Gallery -->
+                <div id="roomGallery" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="@Model.MainImage" class="d-block w-100" alt="@Model.Name">
+                        </div>
+                        @if (Model.Images != null && Model.Images.Any())
+                        {
+                            foreach (var image in Model.Images)
+                            {
+                                <div class="carousel-item">
+                                    <img src="@image" class="d-block w-100" alt="@Model.Name">
+                                </div>
+                            }
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#roomGallery" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#roomGallery" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <!-- Room Details -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h1 class="card-title">@Model.Name</h1>
+                        <p class="text-muted">@Model.Type</p>
+                        <p class="card-text">@Model.Description</p>
+                        
+                        <h5 class="mt-4">Room Features</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-bed"></i> @Model.BedType</li>
+                                    <li><i class="fas fa-ruler-combined"></i> @Model.Size m²</li>
+                                    <li><i class="fas fa-user"></i> Max @Model.MaxGuests guests</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-wifi"></i> Free Wi-Fi</li>
+                                    <li><i class="fas fa-tv"></i> Smart TV</li>
+                                    <li><i class="fas fa-snowflake"></i> Air Conditioning</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Policies -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Room Policies</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-clock"></i> Check-in: 2:00 PM</li>
+                            <li><i class="fas fa-clock"></i> Check-out: 12:00 PM</li>
+                            <li><i class="fas fa-ban"></i> No smoking</li>
+                            <li><i class="fas fa-paw"></i> Pets not allowed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <!-- Booking Form -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Book This Room</h5>
+                        <form asp-controller="Booking" asp-action="Create" method="post">
+                            <input type="hidden" name="RoomId" value="@Model.Id" />
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Check-in Date</label>
+                                <input type="date" class="form-control" name="CheckInDate" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Check-out Date</label>
+                                <input type="date" class="form-control" name="CheckOutDate" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Number of Guests</label>
+                                <select class="form-select" name="NumberOfGuests" required>
+                                    @for (int i = 1; i <= Model.MaxGuests; i++)
+                                    {
+                                        <option value="@i">@i @(i == 1 ? "Guest" : "Guests")</option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Special Requests</label>
+                                <textarea class="form-control" name="SpecialRequests" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Book Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Room not found. Please try again.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize date inputs with min date as today
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="CheckInDate"]').min = today;
+        document.querySelector('input[name="CheckOutDate"]').min = today;
+        
+        // Update checkout min date when checkin changes
+        document.querySelector('input[name="CheckInDate"]').addEventListener('change', function() {
+            document.querySelector('input[name="CheckOutDate"]').min = this.value;
+        });
+    </script>
+} 
