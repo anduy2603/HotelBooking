@@ -1,0 +1,162 @@
+@{
+    ViewData["Title"] = "Check In/Out Management";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Check In/Out Management</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Today's Check-ins</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary active">All</button>
+                            <button class="btn btn-outline-primary">Pending</button>
+                            <button class="btn btn-outline-primary">Completed</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Guest Name</th>
+                                    <th>Room</th>
+                                    <th>Check-in Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#BK001</td>
+                                    <td>John Doe</td>
+                                    <td>Luxury Suite (301)</td>
+                                    <td>14:00</td>
+                                    <td><span class="booking-status status-pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success">Check In</button>
+                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#BK002</td>
+                                    <td>Jane Smith</td>
+                                    <td>Double Room (205)</td>
+                                    <td>15:00</td>
+                                    <td><span class="booking-status status-checked-in">Checked In</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info">View Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Today's Check-outs</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary active">All</button>
+                            <button class="btn btn-outline-primary">Pending</button>
+                            <button class="btn btn-outline-primary">Completed</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Guest Name</th>
+                                    <th>Room</th>
+                                    <th>Check-out Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#BK003</td>
+                                    <td>Mike Johnson</td>
+                                    <td>Single Room (101)</td>
+                                    <td>11:00</td>
+                                    <td><span class="booking-status status-pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success">Check Out</button>
+                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#BK004</td>
+                                    <td>Sarah Wilson</td>
+                                    <td>Deluxe Room (401)</td>
+                                    <td>12:00</td>
+                                    <td><span class="booking-status status-checked-out">Checked Out</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info">View Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Check-in</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Booking ID</label>
+                            <input type="text" class="form-control" placeholder="Enter Booking ID">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Room Key</label>
+                            <input type="text" class="form-control" placeholder="Enter Room Key">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Additional Notes</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Process Check-in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Check-out</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Booking ID</label>
+                            <input type="text" class="form-control" placeholder="Enter Booking ID">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Room Key Return</label>
+                            <input type="text" class="form-control" placeholder="Enter Room Key">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Additional Notes</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Process Check-out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

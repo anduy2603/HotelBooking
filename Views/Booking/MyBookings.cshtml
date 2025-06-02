@@ -1,0 +1,137 @@
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">My Bookings</h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Room Type</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Total Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#BK001</td>
+                                    <td>Luxury Suite</td>
+                                    <td>2024-03-15</td>
+                                    <td>2024-03-18</td>
+                                    <td>$897.00</td>
+                                    <td><span class="booking-status status-confirmed">Confirmed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                        <button class="btn btn-sm btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#BK002</td>
+                                    <td>Double Room</td>
+                                    <td>2024-02-20</td>
+                                    <td>2024-02-22</td>
+                                    <td>$298.00</td>
+                                    <td><span class="booking-status status-checked-out">Checked Out</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                        <button class="btn btn-sm btn-success">Feedback</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#BK003</td>
+                                    <td>Single Room</td>
+                                    <td>2024-04-01</td>
+                                    <td>2024-04-03</td>
+                                    <td>$198.00</td>
+                                    <td><span class="booking-status status-pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                        <button class="btn btn-sm btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Bookings</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Booking #BK001</h6>
+                                    <p class="card-text">
+                                        <strong>Room:</strong> Luxury Suite<br>
+                                        <strong>Check-in:</strong> March 15, 2024<br>
+                                        <strong>Check-out:</strong> March 18, 2024<br>
+                                        <strong>Total:</strong> $897.00
+                                    </p>
+                                    <span class="booking-status status-confirmed">Confirmed</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Booking #BK003</h6>
+                                    <p class="card-text">
+                                        <strong>Room:</strong> Single Room<br>
+                                        <strong>Check-in:</strong> April 1, 2024<br>
+                                        <strong>Check-out:</strong> April 3, 2024<br>
+                                        <strong>Total:</strong> $198.00
+                                    </p>
+                                    <span class="booking-status status-pending">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Past Bookings</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Booking #BK002</h6>
+                                    <p class="card-text">
+                                        <strong>Room:</strong> Double Room<br>
+                                        <strong>Check-in:</strong> February 20, 2024<br>
+                                        <strong>Check-out:</strong> February 22, 2024<br>
+                                        <strong>Total:</strong> $298.00
+                                    </p>
+                                    <span class="booking-status status-checked-out">Checked Out</span>
+                                        <button class="btn btn-sm btn-success">Feedback</button>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
