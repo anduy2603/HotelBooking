@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelBooking.Models;
 
@@ -39,7 +40,16 @@ public class Room
 
     public string? Description { get; set; }
 
+    public List<string> Amenities { get; set; } = new List<string>();
+
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal SeasonalPrice { get; set; }
+
+    public RoomStatus Status { get; set; } = RoomStatus.Available;
+
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+    public ICollection<RoomPrice> PriceHistory { get; set; } = new List<RoomPrice>();
+    public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 }
 
 public enum RoomType
@@ -48,4 +58,13 @@ public enum RoomType
     Double,
     Suite,
     Deluxe
+}
+
+public enum RoomStatus
+{
+    Available,
+    Occupied,
+    Cleaning,
+    Maintenance,
+    OutOfOrder
 } 

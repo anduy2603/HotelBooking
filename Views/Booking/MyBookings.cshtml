@@ -1,137 +1,128 @@
+@model IEnumerable<HotelBooking.ViewModels.BookingViewModel>
+
 @{
-    ViewData["Title"] = "My Bookings";
+    ViewData["Title"] = "Lịch sử đặt phòng của tôi";
 }
 
-<div class="container my-5">
-    <h1 class="text-center mb-4">My Bookings</h1>
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Booking ID</th>
-                                    <th>Room Type</th>
-                                    <th>Check-in</th>
-                                    <th>Check-out</th>
-                                    <th>Total Price</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#BK001</td>
-                                    <td>Luxury Suite</td>
-                                    <td>2024-03-15</td>
-                                    <td>2024-03-18</td>
-                                    <td>$897.00</td>
-                                    <td><span class="booking-status status-confirmed">Confirmed</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">View Details</button>
-                                        <button class="btn btn-sm btn-danger">Cancel</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#BK002</td>
-                                    <td>Double Room</td>
-                                    <td>2024-02-20</td>
-                                    <td>2024-02-22</td>
-                                    <td>$298.00</td>
-                                    <td><span class="booking-status status-checked-out">Checked Out</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">View Details</button>
-                                        <button class="btn btn-sm btn-success">Feedback</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#BK003</td>
-                                    <td>Single Room</td>
-                                    <td>2024-04-01</td>
-                                    <td>2024-04-03</td>
-                                    <td>$198.00</td>
-                                    <td><span class="booking-status status-pending">Pending</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">View Details</button>
-                                        <button class="btn btn-sm btn-danger">Cancel</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <!-- Bộ lọc -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select name="status" class="form-select" asp-items="@Html.GetEnumSelectList<BookingStatus>()">
+                        <option value="">Tất cả</option>
+                    </select>
                 </div>
-            </div>
+                <div class="col-md-3">
+                    <label class="form-label">Từ ngày</label>
+                    <input type="date" name="fromDate" class="form-control" value="@ViewBag.FromDate?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Đến ngày</label>
+                    <input type="date" name="toDate" class="form-control" value="@ViewBag.ToDate?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <a asp-action="MyBookings" class="btn btn-secondary ms-2">Xóa bộ lọc</a>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Upcoming Bookings</h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="card-subtitle mb-2 text-muted">Booking #BK001</h6>
-                                    <p class="card-text">
-                                        <strong>Room:</strong> Luxury Suite<br>
-                                        <strong>Check-in:</strong> March 15, 2024<br>
-                                        <strong>Check-out:</strong> March 18, 2024<br>
-                                        <strong>Total:</strong> $897.00
-                                    </p>
-                                    <span class="booking-status status-confirmed">Confirmed</span>
+    <!-- Danh sách đặt phòng -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Bạn chưa có đơn đặt phòng nào.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var booking in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Đơn #@booking.BookingNumber</h5>
+                            <span class="badge @GetStatusBadgeClass(booking.Status)">
+                                @booking.Status
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Phòng:</strong> @booking.Room?.Name</p>
+                                    <p class="mb-1"><strong>Ngày nhận phòng:</strong> @booking.CheckInDate.ToString("dd/MM/yyyy")</p>
+                                    <p class="mb-1"><strong>Ngày trả phòng:</strong> @booking.CheckOutDate.ToString("dd/MM/yyyy")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Tổng tiền:</strong> @booking.TotalPrice.ToString("N0") VNĐ</p>
+                                    <p class="mb-1"><strong>Đặt cọc:</strong> @booking.DepositAmount.ToString("N0") VNĐ</p>
+                                    <p class="mb-1"><strong>Thanh toán:</strong> @booking.PaymentStatus</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="card-subtitle mb-2 text-muted">Booking #BK003</h6>
-                                    <p class="card-text">
-                                        <strong>Room:</strong> Single Room<br>
-                                        <strong>Check-in:</strong> April 1, 2024<br>
-                                        <strong>Check-out:</strong> April 3, 2024<br>
-                                        <strong>Total:</strong> $198.00
-                                    </p>
-                                    <span class="booking-status status-pending">Pending</span>
-                                </div>
+                            <div class="d-flex justify-content-between">
+                                <a asp-action="Details" asp-route-id="@booking.Id" class="btn btn-info">Chi tiết</a>
+                                @if (booking.Status == BookingStatus.Pending || booking.Status == BookingStatus.Confirmed)
+                                {
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal@(booking.Id)">
+                                        Hủy đặt phòng
+                                    </button>
+                                }
+                                @if (booking.Status == BookingStatus.CheckedOut && booking.Rating == null)
+                                {
+                                    <a asp-action="Rate" asp-route-id="@booking.Id" class="btn btn-warning">Đánh giá</a>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Past Bookings</h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="card-subtitle mb-2 text-muted">Booking #BK002</h6>
-                                    <p class="card-text">
-                                        <strong>Room:</strong> Double Room<br>
-                                        <strong>Check-in:</strong> February 20, 2024<br>
-                                        <strong>Check-out:</strong> February 22, 2024<br>
-                                        <strong>Total:</strong> $298.00
-                                    </p>
-                                    <span class="booking-status status-checked-out">Checked Out</span>
-                                        <button class="btn btn-sm btn-success">Feedback</button>
-                                
-                                </div>
+                <!-- Modal hủy đặt phòng -->
+                <div class="modal fade" id="cancelModal@(booking.Id)" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Xác nhận hủy đặt phòng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
+                            <form asp-action="Cancel" asp-route-id="@booking.Id" method="post">
+                                <div class="modal-body">
+                                    <p>Bạn có chắc chắn muốn hủy đặt phòng này?</p>
+                                    <div class="mb-3">
+                                        <label class="form-label">Lý do hủy phòng</label>
+                                        <textarea name="cancellationReason" class="form-control" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-    </div>
-</div> 
+    }
+</div>
+
+@functions {
+    string GetStatusBadgeClass(BookingStatus status)
+    {
+        return status switch
+        {
+            BookingStatus.Pending => "bg-warning",
+            BookingStatus.Confirmed => "bg-info",
+            BookingStatus.CheckedIn => "bg-primary",
+            BookingStatus.CheckedOut => "bg-success",
+            BookingStatus.Cancelled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+} 

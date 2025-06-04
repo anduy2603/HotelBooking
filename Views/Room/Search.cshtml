@@ -10,35 +10,155 @@
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" class="row g-3">
+                <!-- Date Selection -->
                 <div class="col-md-3">
                     <label class="form-label">Check-in Date</label>
-                    <input type="date" class="form-control" name="checkInDate" required>
+                    <input type="date" class="form-control" name="checkInDate" value="@ViewBag.CheckInDate" required>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Check-out Date</label>
-                    <input type="date" class="form-control" name="checkOutDate" required>
+                    <input type="date" class="form-control" name="checkOutDate" value="@ViewBag.CheckOutDate" required>
                 </div>
+
+                <!-- Guest Information -->
                 <div class="col-md-2">
-                    <label class="form-label">Guests</label>
-                    <select class="form-select" name="guests">
-                        <option value="1">1 Guest</option>
-                        <option value="2">2 Guests</option>
-                        <option value="3">3 Guests</option>
-                        <option value="4">4 Guests</option>
+                    <label class="form-label">Adults</label>
+                    <select class="form-select" name="adults">
+                        @for (int i = 1; i <= 4; i++)
+                        {
+                            <option value="@i" selected="@(ViewBag.Adults == i)">@i @(i == 1 ? "Adult" : "Adults")</option>
+                        }
                     </select>
                 </div>
+                <div class="col-md-2">
+                    <label class="form-label">Children</label>
+                    <select class="form-select" name="children">
+                        @for (int i = 0; i <= 4; i++)
+                        {
+                            <option value="@i" selected="@(ViewBag.Children == i)">@i @(i == 1 ? "Child" : "Children")</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Room Type -->
                 <div class="col-md-2">
                     <label class="form-label">Room Type</label>
                     <select class="form-select" name="roomType">
                         <option value="">All Types</option>
-                        <option value="single">Single</option>
-                        <option value="double">Double</option>
-                        <option value="suite">Suite</option>
+                        @foreach (RoomType type in Enum.GetValues(typeof(RoomType)))
+                        {
+                            <option value="@type" selected="@(ViewBag.RoomType != null && ViewBag.RoomType.ToString() == type.ToString())">@type</option>
+                        }
                     </select>
                 </div>
+
+                <!-- Bed Type -->
                 <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                    <label class="form-label">Bed Type</label>
+                    <select class="form-select" name="bedType">
+                        <option value="">Any</option>
+                        <option value="Single" selected="@(ViewBag.BedType == "Single")">Single</option>
+                        <option value="Double" selected="@(ViewBag.BedType == "Double")">Double</option>
+                        <option value="King" selected="@(ViewBag.BedType == "King")">King</option>
+                    </select>
+                </div>
+
+                <!-- Price Range -->
+                <div class="col-md-3">
+                    <label class="form-label">Min Price ($)</label>
+                    <input type="number" class="form-control" name="minPrice" value="@ViewBag.MinPrice" min="0" step="10">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Max Price ($)</label>
+                    <input type="number" class="form-control" name="maxPrice" value="@ViewBag.MaxPrice" min="0" step="10">
+                </div>
+
+                <!-- Room Size -->
+                <div class="col-md-3">
+                    <label class="form-label">Min Room Size (m²)</label>
+                    <input type="number" class="form-control" name="minSize" value="@ViewBag.MinSize" min="0" step="1">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Max Room Size (m²)</label>
+                    <input type="number" class="form-control" name="maxSize" value="@ViewBag.MaxSize" min="0" step="1">
+                </div>
+
+                <!-- Amenities -->
+                <div class="col-md-6">
+                    <label class="form-label">Amenities</label>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="wifi" id="wifi" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("wifi") ? "checked" : "")>
+                                <label class="form-check-label" for="wifi">Wi-Fi</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="breakfast" id="breakfast" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("breakfast") ? "checked" : "")>
+                                <label class="form-check-label" for="breakfast">Breakfast</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="pool" id="pool" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("pool") ? "checked" : "")>
+                                <label class="form-check-label" for="pool">Pool</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="gym" id="gym" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("gym") ? "checked" : "")>
+                                <label class="form-check-label" for="gym">Gym</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="spa" id="spa" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("spa") ? "checked" : "")>
+                                <label class="form-check-label" for="spa">Spa</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="parking" id="parking" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("parking") ? "checked" : "")>
+                                <label class="form-check-label" for="parking">Parking</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="restaurant" id="restaurant" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("restaurant") ? "checked" : "")>
+                                <label class="form-check-label" for="restaurant">Restaurant</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities" value="bar" id="bar" @(ViewBag.Amenities != null && ((string[])ViewBag.Amenities).Contains("bar") ? "checked" : "")>
+                                <label class="form-check-label" for="bar">Bar</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Status -->
+                <div class="col-md-3">
+                    <label class="form-label">Room Status</label>
+                    <select class="form-select" name="status">
+                        <option value="">Any</option>
+                        <option value="Available" selected="@(ViewBag.Status == "Available")">Available</option>
+                        <option value="Occupied" selected="@(ViewBag.Status == "Occupied")">Occupied</option>
+                        <option value="Maintenance" selected="@(ViewBag.Status == "Maintenance")">Maintenance</option>
+                    </select>
+                </div>
+
+                <!-- Search Term -->
+                <div class="col-md-9">
+                    <label class="form-label">Search</label>
+                    <input type="text" class="form-control" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search by room name, description, amenities...">
+                </div>
+
+                <!-- Buttons -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="@Url.Action("Search")" class="btn btn-secondary">Reset</a>
                 </div>
             </form>
         </div>
@@ -60,6 +180,7 @@
                                 <div>
                                     <p class="mb-0"><i class="fas fa-user"></i> Max @room.MaxGuests guests</p>
                                     <p class="mb-0"><i class="fas fa-bed"></i> @room.BedType</p>
+                                    <p class="mb-0"><i class="fas fa-ruler-combined"></i> @room.Size m²</p>
                                 </div>
                                 <div class="text-end">
                                     <p class="room-price mb-0">$@room.Price/night</p>
@@ -93,5 +214,36 @@
         document.querySelector('input[name="checkInDate"]').addEventListener('change', function() {
             document.querySelector('input[name="checkOutDate"]').min = this.value;
         });
+
+        // Validate price range
+        document.querySelector('input[name="minPrice"]').addEventListener('change', function() {
+            const maxPrice = document.querySelector('input[name="maxPrice"]');
+            if (parseFloat(this.value) > parseFloat(maxPrice.value)) {
+                maxPrice.value = this.value;
+            }
+        });
+
+        document.querySelector('input[name="maxPrice"]').addEventListener('change', function() {
+            const minPrice = document.querySelector('input[name="minPrice"]');
+            if (parseFloat(this.value) < parseFloat(minPrice.value)) {
+                minPrice.value = this.value;
+            }
+        });
+
+        // Validate room size range
+        document.querySelector('input[name="minSize"]').addEventListener('change', function() {
+            const maxSize = document.querySelector('input[name="maxSize"]');
+            if (parseFloat(this.value) > parseFloat(maxSize.value)) {
+                maxSize.value = this.value;
+            }
+        });
+
+        document.querySelector('input[name="maxSize"]').addEventListener('change', function() {
+            const minSize = document.querySelector('input[name="minSize"]');
+            if (parseFloat(this.value) < parseFloat(minSize.value)) {
+                minSize.value = this.value;
+            }
+        });
     </script>
+} 
 } 

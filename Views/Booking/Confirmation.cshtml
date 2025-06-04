@@ -1,0 +1,66 @@
+@model HotelBooking.Models.Booking
+
+@{
+    ViewData["Title"] = "Xác nhận đặt phòng";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body text-center">
+            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+            <h2 class="mt-3">Đặt phòng thành công!</h2>
+            <p class="lead">Cảm ơn bạn đã đặt phòng tại khách sạn của chúng tôi.</p>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>Thông tin đặt phòng</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Mã đặt phòng:</strong> #@Model.Id</p>
+                    <p><strong>Loại phòng:</strong> @Model.Room?.Type</p>
+                    <p><strong>Ngày nhận phòng:</strong> @Model.CheckInDate.ToString("dd/MM/yyyy")</p>
+                    <p><strong>Ngày trả phòng:</strong> @Model.CheckOutDate.ToString("dd/MM/yyyy")</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Tổng tiền:</strong> @Model.TotalPrice.ToString("N0") VNĐ</p>
+                    <p><strong>Đặt cọc:</strong> @Model.DepositAmount.ToString("N0") VNĐ</p>
+                    <p><strong>Trạng thái:</strong> 
+                        <span class="badge bg-@(Model.Status == BookingStatus.Pending ? "warning" : 
+                                            Model.Status == BookingStatus.Confirmed ? "success" : 
+                                            Model.Status == BookingStatus.Cancelled ? "danger" : "secondary")">
+                            @Model.Status
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.SpecialRequests))
+            {
+                <div class="mt-3">
+                    <h5>Yêu cầu đặc biệt</h5>
+                    <p>@Model.SpecialRequests</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>Hướng dẫn tiếp theo</h4>
+            <hr />
+            <ol>
+                <li>Vui lòng thanh toán đặt cọc trong vòng 24 giờ để xác nhận đặt phòng.</li>
+                <li>Chúng tôi sẽ gửi email xác nhận sau khi nhận được thanh toán.</li>
+                <li>Bạn có thể kiểm tra trạng thái đặt phòng trong mục "Đặt phòng của tôi".</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Xem chi tiết</a>
+        <a asp-action="MyBookings" class="btn btn-secondary">Đặt phòng của tôi</a>
+    </div>
+</div> 

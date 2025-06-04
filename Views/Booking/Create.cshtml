@@ -1,0 +1,97 @@
+@model HotelBooking.ViewModels.BookingViewModel
+
+@{
+    ViewData["Title"] = "Đặt phòng";
+}
+
+<div class="container mt-4">
+    <h2>Đặt phòng</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="RoomId" />
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Thông tin phòng</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Loại phòng:</strong> @Model.Room?.Type</p>
+                                <p><strong>Giá:</strong> @Model.Room?.Price.ToString("N0") VNĐ/đêm</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Sức chứa:</strong> @Model.Room?.MaxGuests người</p>
+                                <p><strong>Diện tích:</strong> @Model.Room?.Size m²</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Thông tin đặt phòng</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CheckInDate" class="control-label"></label>
+                                    <input asp-for="CheckInDate" class="form-control" />
+                                    <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CheckOutDate" class="control-label"></label>
+                                    <input asp-for="CheckOutDate" class="form-control" />
+                                    <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label asp-for="SpecialRequests" class="control-label"></label>
+                            <textarea asp-for="SpecialRequests" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="SpecialRequests" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Đặt phòng</button>
+                    <a asp-controller="Room" asp-action="Details" asp-route-id="@Model.RoomId" class="btn btn-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Chính sách đặt phòng</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Đặt cọc 30% giá trị đặt phòng</li>
+                        <li><i class="fas fa-check text-success"></i> Hủy miễn phí trước 24h</li>
+                        <li><i class="fas fa-check text-success"></i> Check-in từ 14:00</li>
+                        <li><i class="fas fa-check text-success"></i> Check-out trước 12:00</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Set min date for check-in to today
+            var today = new Date().toISOString().split('T')[0];
+            $('#CheckInDate').attr('min', today);
+            
+            // Set min date for check-out to check-in date
+            $('#CheckInDate').change(function() {
+                $('#CheckOutDate').attr('min', $(this).val());
+            });
+        });
+    </script>
+} 

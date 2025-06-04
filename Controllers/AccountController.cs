@@ -3,11 +3,23 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using HotelBooking.Models;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using HotelBooking.Data;
+using HotelBooking.ViewModels;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace HotelBooking.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public AccountController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         // Dữ liệu mẫu cho admin
         private static readonly User AdminUser = new User
         {
@@ -15,7 +27,8 @@ namespace HotelBooking.Controllers
             Username = "admin",
             Password = "admin123",
             Email = "admin@example.com",
-            Role = "Admin"
+            Role = "Admin",
+            PasswordHash = "ICy5YqxZB1uWSwcVLSNLcA=="
         };
 
         [HttpGet]
@@ -29,17 +42,46 @@ namespace HotelBooking.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // Kiểm tra đăng nhập với admin
-                if (model.Username == AdminUser.Username && model.Password == AdminUser.Password)
+                if (model.Username == "admin" && model.Password == "admin123")
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, AdminUser.Username),
-                        new Claim(ClaimTypes.Role, AdminUser.Role)
+                        new Claim(ClaimTypes.Name, "admin"),
+                        new Claim(ClaimTypes.Role, "Admin"),
+                        new Claim(ClaimTypes.NameIdentifier, "1")
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = model.RememberMe
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Kiểm tra đăng nhập với user thường
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Username == model.Username);
+
+                if (user != null && VerifyPassword(model.Password, user.PasswordHash))
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Role, user.Role),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -73,31 +115,49 @@ namespace HotelBooking.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra username không được trùng với admin
-                if (model.Username == AdminUser.Username)
+                // Kiểm tra username đã tồn tại chưa
+                if (await _context.Users.AnyAsync(u => u.Username == model.Username) || model.Username == "admin")
                 {
                     ModelState.AddModelError("Username", "Username already exists.");
                     return View(model);
                 }
 
-                // Tạo user mới (trong thực tế sẽ lưu vào database)
+                var passwordHash = HashPassword(model.Password);
+
+                // Tạo user mới
                 var user = new User
                 {
                     Username = model.Username,
                     Email = model.Email,
                     Password = model.Password,
+                    PasswordHash = passwordHash,
                     Role = "User"
                 };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                // Tạo bản ghi Guest tương ứng
+                var guest = new Guest
+                {
+                    UserId = user.Id,
+                    Name = user.Username,
+                    Email = user.Email
+                };
+                _context.Guests.Add(guest);
+                await _context.SaveChangesAsync();
 
                 // Tự động đăng nhập sau khi đăng ký
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -115,10 +175,25 @@ namespace HotelBooking.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
+        }
+
+        private bool VerifyPassword(string password, string passwordHash)
+        {
+            return HashPassword(password) == passwordHash;
         }
     }
 } 
